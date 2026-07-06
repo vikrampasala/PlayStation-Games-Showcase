@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayStation Game Collection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Navigation Bar */
+        header {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2196F3;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #2196F3;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #2196F3 0%, #1565c0 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 0;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Search and Filter Section */
+        .filter-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-section input, .filter-section select {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-section input:focus, .filter-section select:focus {
+            outline: none;
+            border-color: #2196F3;
+            box-shadow: 0 0 5px rgba(33, 150, 243, 0.3);
+        }
+
+        /* Games Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .game-image {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .game-info {
+            padding: 20px;
+        }
+
+        .game-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .game-genre {
+            display: inline-block;
+            background: #FFC107;
+            color: #333;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .game-year {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .game-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .learn-more-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background 0.3s;
+            width: 100%;
+        }
+
+        .learn-more-btn:hover {
+            background: #1565c0;
+        }
+
+        /* Modal for Game Details */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .modal h2 {
+            margin-bottom: 15px;
+            color: #2196F3;
+        }
+
+        .modal p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        /* Contact Form */
+        .contact-section {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            max-width: 600px;
+            margin: 40px auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .contact-section h2 {
+            margin-bottom: 30px;
+            color: #2196F3;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #2196F3;
+            box-shadow: 0 0 5px rgba(33, 150, 243, 0.3);
+        }
+
+        .submit-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: #1565c0;
+        }
+
+        .success-message {
+            display: none;
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        /* Hide Elements */
+        .hidden {
+            display: none;
+        }
+
+        /* About Section */
+        .about-section {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .about-section h2 {
+            color: #2196F3;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .filter-section {
+                flex-direction: column;
+            }
+
+            .filter-section input, .filter-section select {
+                width: 100%;
+            }
+
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .contact-section {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .hero h1 {
+                font-size: 24px;
+            }
+
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">🎮 PSX Games</div>
+            <nav>
+                <ul>
+                    <li><a href="#home" onclick="showHome()">Home</a></li>
+                    <li><a href="#games" onclick="showGames()">Games</a></li>
+                    <li><a href="#about" onclick="showAbout()">About</a></li>
+                    <li><a href="#contact" onclick="showContact()">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="hero" id="hero">
+        <h1>PlayStation Game Collection</h1>
+        <p>Explore the best games across all PlayStation platforms</p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Home Section -->
+        <section id="home" class="hidden">
+            <div class="about-section">
+                <h2>Welcome to PSX Games Collection</h2>
+                <p>Discover the most popular and acclaimed PlayStation games. From action-packed adventures to immersive RPGs, find your next favorite game here!</p>
+                <p>Use the search and filter features to find games by title or genre. Click "Learn More" on any game card to get detailed information.</p>
+            </div>
+        </section>
+
+        <!-- Games Section -->
+        <section id="games">
+            <!-- Search and Filter -->
+            <div class="filter-section">
+                <input type="text" id="searchInput" placeholder="Search games..." onkeyup="filterGames()">
+                <select id="genreFilter" onchange="filterGames()">
+                    <option value="">All Genres</option>
+                    <option value="Action">Action</option>
+                    <option value="RPG">RPG</option>
+                    <option value="Adventure">Adventure</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Strategy">Strategy</option>
+                </select>
+            </div>
+
+            <!-- Games Grid -->
+            <div class="games-grid" id="gamesGrid"></div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="hidden">
+            <div class="about-section">
+                <h2>About This Website</h2>
+                <p><strong>Project Type:</strong> High School Web Development Project</p>
+                <p><strong>Technologies Used:</strong> HTML, CSS, and JavaScript</p>
+                <p><strong>Purpose:</strong> This website demonstrates fundamental web development skills including:</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>Responsive web design</li>
+                    <li>DOM manipulation with JavaScript</li>
+                    <li>Event handling and filtering</li>
+                    <li>Form validation</li>
+                    <li>Modern CSS layouts (Grid, Flexbox)</li>
+                </ul>
+                <p style="margin-top: 20px;"><strong>Learning Goals:</strong> Build a fully functional website that displays data dynamically, handles user interactions, and provides a smooth user experience across all devices.</p>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="hidden">
+            <div class="contact-section">
+                <h2>Contact Us</h2>
+                <div class="success-message" id="successMessage">Thank you! Your message has been sent successfully.</div>
+                <form id="contactForm" onsubmit="submitForm(event)">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message:</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <!-- Game Details Modal -->
+    <div id="gameModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 PlayStation Games Collection | High School Web Project</p>
+    </footer>
+
+    <script>
+        // Game Data
+        const games = [
+            {
+                id: 1,
+                title: "Spider-Man 2",
+                genre: "Action",
+                year: 2023,
+                description: "Play as Miles Morales and Peter Parker in this action-packed sequel.",
+                fullDescription: "Marvel's Spider-Man 2 follows Miles Morales and Peter Parker as they face new threats in New York City. Experience epic action sequences and explore an expanded open world.",
+                developer: "Insomniac Games"
+            },
+            {
+                id: 2,
+                title: "God of War Ragnarök",
+                genre: "Action",
+                year: 2023,
+                description: "The final chapter in the Norse saga. Kratos and Atreus face their greatest challenge.",
+                fullDescription: "God of War Ragnarök completes the Norse saga as Kratos and his son Atreus prepare for the end of days. Stunning visuals and epic storytelling await.",
+                developer: "Santa Monica Studio"
+            },
+            {
+                id: 3,
+                title: "Elden Ring",
+                genre: "RPG",
+                year: 2022,
+                description: "Explore a vast open world filled with mystery and danger in this challenging RPG.",
+                fullDescription: "Elden Ring is a collaboration between FromSoftware and George R. R. Martin. Explore the Lands Between, face formidable foes, and become the Elden Lord.",
+                developer: "FromSoftware"
+            },
+            {
+                id: 4,
+                title: "Final Fantasy VII Rebirth",
+                genre: "RPG",
+                year: 2024,
+                description: "The next chapter in the reimagined Final Fantasy VII saga unfolds.",
+                fullDescription: "Final Fantasy VII Rebirth continues the reimagined story of Cloud and his allies. Experience a vast world with deep characters and an engaging narrative.",
+                developer: "Square Enix"
+            },
+            {
+                id: 5,
+                title: "Astro Bot",
+                genre: "Adventure",
+                year: 2024,
+                description: "Join Astro on a heartwarming journey across PlayStation galaxies.",
+                fullDescription: "Astro Bot is a charming platformer adventure where you join Astro on a mission to reunite the bot crew and save the PlayStation universe.",
+                developer: "Team Asobi"
+            },
+            {
+                id: 6,
+                title: "Hogwarts Legacy",
+                genre: "RPG",
+                year: 2023,
+                description: "Experience the magical world of Harry Potter in this immersive RPG.",
+                fullDescription: "Hogwarts Legacy lets you create your own student and explore the Wizarding World. Attend classes, uncover secrets, and make impactful choices.",
+                developer: "Avalanche Software"
+            }
+        ];
+
+        // Initialize on page load
+        function init() {
+            displayGames(games);
+        }
+
+        // Display games
+        function displayGames(gamesToShow) {
+            const gamesGrid = document.getElementById('gamesGrid');
+            gamesGrid.innerHTML = '';
+
+            if (gamesToShow.length === 0) {
+                gamesGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 20px;">No games found. Try a different search!</p>';
+                return;
+            }
+
+            gamesToShow.forEach(game => {
+                const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F'];
+                const color = colors[game.id % colors.length];
+
+                const gameCard = document.createElement('div');
+                gameCard.className = 'game-card';
+                gameCard.innerHTML = `
+                    <div class="game-image" style="background-color: ${color};">
+                        🎮
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">${game.title}</h3>
+                        <span class="game-genre">${game.genre}</span>
+                        <p class="game-year">Released: ${game.year}</p>
+                        <p class="game-description">${game.description}</p>
+                        <button class="learn-more-btn" onclick="openModal(${game.id})">Learn More</button>
+                    </div>
+                `;
+                gamesGrid.appendChild(gameCard);
+            });
+        }
+
+        // Filter games
+        function filterGames() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const genreFilter = document.getElementById('genreFilter').value;
+
+            const filtered = games.filter(game => {
+                const matchesSearch = game.title.toLowerCase().includes(searchInput) || 
+                                    game.description.toLowerCase().includes(searchInput);
+                const matchesGenre = genreFilter === '' || game.genre === genreFilter;
+                return matchesSearch && matchesGenre;
+            });
+
+            displayGames(filtered);
+        }
+
+        // Open modal with game details
+        function openModal(gameId) {
+            const game = games.find(g => g.id === gameId);
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = `
+                <h2>${game.title}</h2>
+                <p><strong>Genre:</strong> ${game.genre}</p>
+                <p><strong>Release Year:</strong> ${game.year}</p>
+                <p><strong>Developer:</strong> ${game.developer}</p>
+                <p><strong>Description:</strong></p>
+                <p>${game.fullDescription}</p>
+            `;
+            document.getElementById('gameModal').style.display = 'block';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('gameModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('gameModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Submit contact form
+        function submitForm(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            if (!name || !email || !message) {
+                alert('Please fill in all fields!');
+                return;
+            }
+
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+            
+            document.getElementById('contactForm').reset();
+            
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        // Navigation functions
+        function showHome() {
+            hideAllSections();
+            document.getElementById('home').classList.remove('hidden');
+            document.getElementById('hero').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        function showGames() {
+            hideAllSections();
+            document.getElementById('games').classList.remove('hidden');
+            document.getElementById('hero').style.display = 'none';
+            window.scrollTo(0, 0);
+        }
+
+        function showAbout() {
+            hideAllSections();
+            document.getElementById('about').classList.remove('hidden');
+            document.getElementById('hero').style.display = 'none';
+            window.scrollTo(0, 0);
+        }
+
+        function showContact() {
+            hideAllSections();
+            document.getElementById('contact').classList.remove('hidden');
+            document.getElementById('hero').style.display = 'none';
+            window.scrollTo(0, 0);
+        }
+
+        function hideAllSections() {
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('games').classList.add('hidden');
+            document.getElementById('about').classList.add('hidden');
+            document.getElementById('contact').classList.add('hidden');
+        }
+
+        // Start the app
+        init();
+    </script>
+</body>
+</html>
