@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming Hub - Discover Your Next Adventure</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header>
+        <nav class="navbar">
+            <h1 class="logo">🎮 Gaming Hub</h1>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#games" class="nav-link">Games</a></li>
+                <li><a href="#categories" class="nav-link">Categories</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h2 class="hero-title">Discover Your Next Gaming Adventure</h2>
+            <p class="hero-description">Explore our curated collection of the best games across all genres. From action-packed shooters to immersive RPGs, find your perfect game today!</p>
+            <button class="btn btn-primary">Explore Games</button>
+        </div>
+    </section>
+
+    <!-- Search and Filter Controls -->
+    <section class="controls" id="categories">
+        <div class="container">
+            <div class="search-bar">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    class="search-input" 
+                    placeholder="🔍 Search for games..."
+                >
+            </div>
+            <div class="filter-bar">
+                <label for="categoryFilter">Filter by Category:</label>
+                <select id="categoryFilter" class="category-select">
+                    <option value="all">All Games</option>
+                    <option value="action">Action</option>
+                    <option value="adventure">Adventure</option>
+                    <option value="rpg">RPG</option>
+                    <option value="sports">Sports</option>
+                    <option value="strategy">Strategy</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- Games Grid Section -->
+    <main>
+        <section class="games-section" id="games">
+            <div class="container">
+                <h2 class="section-title">Featured Games</h2>
+                <!-- Games will be dynamically inserted here by JavaScript -->
+                <div id="gamesContainer" class="games-grid">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" id="about">
+        <div class="container">
+            <p>&copy; 2026 Gaming Hub. Created as an educational project.</p>
+            <p>HTML, CSS & JavaScript School Project</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript File -->
+    <script src="script.js"></script>
+</body>
+</html>
